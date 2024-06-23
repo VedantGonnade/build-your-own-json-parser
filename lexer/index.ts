@@ -4,6 +4,7 @@ import { TokenType, charToTokenTypeMap } from "./tokenType.ts";
 export class Lexer {
   private input: string;
   private position: number;
+  private tokenKeys: string[] = Object.keys(charToTokenTypeMap);
 
   constructor(input: string) {
     this.input = input;
@@ -17,7 +18,7 @@ export class Lexer {
 
     const currentChar = this.input[this.position];
 
-    if(currentChar) {
+    if (this.tokenKeys.includes(currentChar)) {
       return this.returnToken(currentChar);
     } else {
       throw new Error(`Invalid character: ${currentChar}`);
