@@ -1,6 +1,6 @@
 export enum TokenType {
-  LeftBrace = "{",
-  RightBrace = "}",
-  EOF = "EOF"
+  LeftBrace,
+  RightBrace,
+  EOF,
 };
 
