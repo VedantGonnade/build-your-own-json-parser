@@ -1,4 +1,4 @@
-import { parseJson, readJson } from "../utils/jsonOperation.ts";
+import { parseJson, readJson } from "../src/utils/jsonOperation.ts";
 
 describe("JSON parser test step 1", () => {
   it("should validate a correct Json file in step 1 directory", () => {

@@ -12,10 +12,9 @@ export class Parser {
   }
 
   public parse(): boolean {
-
     let leftBraceCount: number = 0;
 
-    if(this.currentToken.type === TokenType.EOF) return false
+    if (this.currentToken.type === TokenType.EOF) return false;
 
     while (this.currentToken.type !== TokenType.EOF) {
       if (this.currentToken.type === TokenType.LeftBrace) {
