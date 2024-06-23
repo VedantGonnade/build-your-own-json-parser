@@ -4,3 +4,8 @@ export enum TokenType {
   EOF,
 };
 
+export const charToTokenTypeMap: { [key: string]: TokenType } = {
+  "{":  TokenType.LeftBrace,
+  "}": TokenType.RightBrace,
+};
+

@@ -1,5 +1,5 @@
 import { Token } from "./token.ts";
-import { TokenType } from "./tokenType.ts";
+import { TokenType, charToTokenTypeMap } from "./tokenType.ts";
 
 export class Lexer {
   private input: string;
@@ -17,14 +17,15 @@ export class Lexer {
 
     const currentChar = this.input[this.position];
 
-    if (currentChar == "{") {
-      this.position++;
-      return new Token(TokenType.LeftBrace, "{");
-    } else if (currentChar == "}") {
-      this.position++;
-      return new Token(TokenType.RightBrace, "}");
+    if(currentChar) {
+      return this.returnToken(currentChar);
     } else {
-      throw new Error(`Unexpected character: ${currentChar}`);
+      throw new Error(`Invalid character: ${currentChar}`);
     }
+  }
+
+  private returnToken(char: string) {
+    this.position++;
+    return new Token(charToTokenTypeMap[char], char);
   }
 }
