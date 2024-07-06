@@ -16,6 +16,8 @@ export class Parser {
 
     if (this.currentToken.type === TokenType.EOF) return false;
 
+    if(this.currentToken.type !== TokenType.LeftBrace) return false;
+
     while (this.currentToken.type !== TokenType.EOF) {
       if (this.currentToken.type === TokenType.LeftBrace) {
         leftBraceCount++;

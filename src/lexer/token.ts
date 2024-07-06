@@ -1,5 +1,7 @@
 import { TokenType } from "./tokenType.ts";
 
 export class Token {
-  constructor(public type: TokenType, public value: string) {}
+  public static createToken(type: TokenType, value?: string) {
+    return { type, value };
+  }
 }
