@@ -1,35 +1,66 @@
-import { Lexer } from "../lexer/index.ts";
-import { Token } from "../lexer/token.ts";
 import { TokenType } from "../lexer/tokenType.ts";
 
-export class Parser {
-  private lexer: Lexer;
-  private currentToken: Token;
 
-  constructor(input: string) {
-    this.lexer = new Lexer(input);
-    this.currentToken = this.lexer.nextToken();
+interface Body {
+  type: "ObjectExpression",
+  properties?: any 
+}
+interface Parser {
+  type: "Program",
+  body?: Body[]
+}
+
+export const parser = (tokens: Array<{ type: string; value?: any }>) => {
+  let current = 0;
+
+  const mainBody: Parser = {
+    type: "Program",
+    body: []
   }
 
-  public parse(): boolean {
-    let leftBraceCount: number = 0;
+  const walk = () => {
+    let token = tokens[current];
 
-    if (this.currentToken.type === TokenType.EOF) return false;
+    if (token.type === TokenType.LEFT_BRACE) {
+      token = tokens[++current];
 
-    if(this.currentToken.type !== TokenType.LeftBrace) return false;
+      const node: Body = {
+        type: "ObjectExpression",
+        properties: [],
+      };
 
-    while (this.currentToken.type !== TokenType.EOF) {
-      if (this.currentToken.type === TokenType.LeftBrace) {
-        leftBraceCount++;
-      } else if (this.currentToken.type === TokenType.RightBrace) {
-        if (leftBraceCount === 0) {
-          return false;
+      while (token.type !== TokenType.RIGHT_BRACE) {
+        const property: { type: string; key: any; value: any } = {
+          type: "Property",
+          key: token,
+          value: null,
+        };
+
+        token = tokens[++current];
+
+        token = tokens[++current];
+        property.value = walk();
+        node.properties?.push(property);
+
+        token = tokens[current];
+        if (token.type === TokenType.COMMA) {
+          token = tokens[++current];
         }
-        leftBraceCount--;
       }
 
-      this.currentToken = this.lexer.nextToken();
+      current++;
+      // console.log(node)
+      mainBody.body?.push(node)
+      console.log(mainBody)
+
+      return node;
     }
-    return leftBraceCount === 0;
-  }
-}
+  };
+  walk();
+};
+
+console.log(
+  parser([
+    { type: "LEFT_BRACE", value: undefined },
+  ])
+);
